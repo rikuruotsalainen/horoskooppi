@@ -23,6 +23,7 @@
       // Tässä käytetty AI koska en osannut mennä CORS errorin ohi fetchissä ilman sitä
       // AI käytti api.allorigins.win proxya joka ohtti CORS errorin
       const proxyUrl = 'https://api.allorigins.win/get?url=';
+      //halutun fetchin URL
       const targetUrl = `https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${itemId}&day=TODAY`;
       // Muuten normaali fetch mutta siinä yhdistetään proxyUrl ja targetUrl
       const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
