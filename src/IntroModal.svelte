@@ -2,7 +2,7 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { horoscopeArray } from './horoscopeArray.js';
-
+  import { fly, fade, scale } from 'svelte/transition';
   export let showIntroModal = false;
   export let closeIntroModal;
 
@@ -34,8 +34,8 @@
 
 <!-- Vain jos modaali on näkyvissä -->
 {#if showIntroModal}
-  <div class="modal-overlay">
-    <div class="modal-content">
+  <div class="overlay">
+    <div class="content" transition:scale={{ duration: 300 }}>
       <h1>Welcome to the Horoscope App!</h1>
       <p>This app lets you check daily horoscopes for your zodiac sign.</p>
 
@@ -81,7 +81,7 @@
 
 <!-- Tyylit -->
 <style>
-  .modal-overlay {
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -94,7 +94,7 @@
     z-index: 1000;
   }
 
-  .modal-content {
+  .content {
     background: #3f3154;
     padding: 20px;
     border-radius: 10px;

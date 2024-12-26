@@ -3,12 +3,13 @@
   export let closeModal;
   export let modalContent = {};
   export let isLoading = false;
+  import { fly, fade, scale } from 'svelte/transition';
 </script>
 
 <!-- Vain jos modaali on näkyvissä -->
 {#if showModal}
   <div class="overlay">
-    <div class="content">
+    <div class="content" transition:scale={{ duration: 300 }}>
       <!-- Lataus teksti -->
       {#if isLoading}
         <p>Loading...</p>
