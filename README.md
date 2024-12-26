@@ -4,9 +4,9 @@
 
 ### Kuvaus
 
-Harjoitustyö on horoskooppi app josta käyttäjä voi käydä katsomassa päivän horoskoopin.
-Soveluksessa käyttäjä valitsee ensin oman horoskooppinsa jonka jälkeen sovellus korostaa sen mutta käyttäjä voi myös lukea muiden horoskooppien ennustuksia.
-Horoskoopit vaihtuvat päivittäin.
+Harjoitustyöni on horoskooppi-sovellus, joka tarjoaa käyttäjälle mahdollisuuden tarkastella päivän horoskooppia.
+Sovelluksen aloitusnäkymässä käyttäjä valitsee oman horoskooppinsa, joka korostetaan selkeästi. Halutessaan käyttäjä voi kuitenkin lukea myös muiden horoskoop-pimerkkien ennustuksia.
+Sovelluksen sisältämät horoskoopit saadaan fetchistä ja ne päivittyvät päivittäin.
 
 ### Materiaalit
 
@@ -14,6 +14,7 @@ Hyödynsin työssä Tikorporatessa aiemmin tehtyä Amethyst projektia.
 https://github.com/jamktiko/Amethyst
 Etenkin siinä tehtyä horoskooppi toiminnallisuutta joka toimii saman tyylisesti kuin tämä sovellus mutta React Nativella tehtynä puhelimelle.
 Harjoitustyön kuvat ja värimaailma on otettu myös Amethyst projektista.
+Api josta päivittäiset horoskoopit haetaan: https://horoscope-app-api.vercel.app/
 
 ### Tekoäly
 
