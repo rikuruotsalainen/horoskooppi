@@ -5,14 +5,17 @@
 </script>
 
 <button on:click={onClick} class="horoscope-button">
+  <!-- Horoskoopin kuva -->
   <img src={img} alt={title} />
+  <!-- Horoskoopin nimi -->
   <span>{title}</span>
 </button>
 
+<!-- Tyylit -->
 <style>
   .horoscope-button {
-    display: flex;
     align-items: center;
+    display: flex;
     padding: 10px;
     margin: 10px;
     background-color: #3f3154;
@@ -23,6 +26,7 @@
     font-size: x-large;
     font-weight: 500;
     border-color: #aca3af;
+    border-style: solid;
     width: 400px;
     justify-content: space-between;
   }
@@ -30,7 +34,6 @@
   .horoscope-button img {
     width: 70px;
     height: 70px;
-    margin-right: 10px;
   }
 
   .horoscope-button:hover {

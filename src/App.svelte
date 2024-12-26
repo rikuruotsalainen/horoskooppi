@@ -1,69 +1,94 @@
 <script>
+  //importit
   import { horoscopeArray } from './horoscopeArray.js';
   import HoroscopeButton from './HoroscopeButton.svelte';
   import HoroscopeModal from './HoroscopeModal.svelte';
   import IntroModal from './IntroModal.svelte';
 
-  let showModal = false;
-  let modalContent = {};
-  let isLoading = false;
+  let showModal = false; //Horoskooppi data modaali on piilotettu ennen kuin nappia painetaan
+  let showIntroModal = true; // Intro modaali jossa käyttäjä valitsee oman horoskooppinsa on heti näkyvissä
+  let modalContent = {}; // Modaalin sisältö on aluksi tyhjä koska fetchiä ei ole tehty
+  let isLoading = false; //Lataus teksti ei tule näkyviin ennen kuin sitä kutsutaan
+  let selectedZodiac = null; // Talennetaan valittu horoskooppi
 
-  // The fetch function that uses itemId correctly
+  function handleZodiacSelect(event) {
+    selectedZodiac = horoscopeArray.find((item) => item.id === event.detail); // Etsitään koko horoskoopin tiedot valitun nimen perusteella
+  }
+
+  // Fetchaa horoskoopin datan valitulle horoskoopille
   async function fetchModalData(itemId) {
+    // Lataus teksti näkyy sillä aikaa kun dataa ladataan
     isLoading = true;
     try {
-      // Use a proxy to bypass CORS if needed
+      // Tässä käytetty AI koska en osannut mennä CORS errorin ohi fetchissä ilman sitä
+      // AI käytti api.allorigins.win proxya joka ohtti CORS errorin
       const proxyUrl = 'https://api.allorigins.win/get?url=';
       const targetUrl = `https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${itemId}&day=TODAY`;
-
+      // Muuten normaali fetch mutta siinä yhdistetään proxyUrl ja targetUrl
       const response = await fetch(proxyUrl + encodeURIComponent(targetUrl));
-
-      // Check if response is OK
+      //Error viesti
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
 
-      // Parse the response (the 'contents' field)
       const result = await response.json();
-      const data = JSON.parse(result.contents); // Parse the stringified JSON in contents
+      const data = JSON.parse(result.contents);
 
       if (!data || !data.data) {
         throw new Error('Invalid response format');
       }
 
-      // Set the modal content, including the date
       modalContent = {
-        title: itemId, // Display the sign's name as title
-        description: data.data.horoscope_data, // Display the horoscope data
-        date: data.data.date, // Add the date here
-        image: horoscopeArray.find((item) => item.id === itemId).image, // Find and set image
+        title: itemId, // Näytetään horoskoopin nimi otsikkona
+        description: data.data.horoscope_data, // Fetchistä saatu päivän horoskooppi
+        date: data.data.date, // Fetchistä saatu horoskoopin päivämäärä
+        image: horoscopeArray.find((item) => item.id === itemId)?.image || '', // Etsitään horoskoopin kuva mikä vastaa nimeä
       };
 
-      showModal = true; // Show the modal after fetching the data
+      showModal = true; // Näytetään modaali
+      //Error viesti
     } catch (error) {
       console.error('Error fetching modal data:', error);
       modalContent = { title: 'Error', description: error.message };
-      showModal = true; // Show error message in the modal
+      showModal = true;
+      //Latausteksti pois
     } finally {
       isLoading = false;
     }
   }
+
   // Function to open the modal with specific content
   function openModal(item) {
-    fetchModalData(item.id);
-    modalContent = item; // Set the content to the selected item
-    showModal = true; // Show the modal
+    fetchModalData(item.id); // Only call fetchModalData, no need to set modalContent here again
   }
 
-  // Close modal
+  // funktio joka sulkee horoskooppi tieto modaalin
   function closeModal() {
     showModal = false;
+  }
+
+  // Funktio joka sulkee aloitus modaalin
+  function closeIntroModal() {
+    showIntroModal = false;
   }
 </script>
 
 <main>
-  <h1>Horoskoopit</h1>
+  <h1>My Horoscope</h1>
+
+  <!-- Luo napin käyttäjän valitsemalle horoskoopille -->
+  {#if selectedZodiac}
+    <HoroscopeButton
+      title={selectedZodiac.id}
+      img={selectedZodiac.image}
+      onClick={() => openModal(selectedZodiac)}
+    />
+  {/if}
+
+  <h1>All Horoscopes</h1>
+  <!-- Kaikki horoskoopit jos käyttäjä haluaa lukea muita kuin omaa -->
   <div class="button">
+    <!-- Luo napin horoscopeArrayn jokaiselle horoskoopille -->
     {#each horoscopeArray as item}
       <HoroscopeButton
         title={item.id}
@@ -73,10 +98,18 @@
     {/each}
   </div>
 
-  <!-- Modal component -->
+  <!-- Modaali joka aukeaa sivun auetessa -->
+  <IntroModal
+    {showIntroModal}
+    {closeIntroModal}
+    on:select={handleZodiacSelect}
+  />
+
+  <!-- Horoskooppi tieto modaali joka aukeaa nappia painamalla -->
   <HoroscopeModal {showModal} {closeModal} {modalContent} {isLoading} />
 </main>
 
+<!-- Tyylit/responsiivisuus -->
 <style>
   main {
     display: flex;
@@ -86,7 +119,7 @@
     padding: 20px;
   }
 
-  /* 3 buttons per row */
+  /* 3 nappia per rivi*/
   .button {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -95,13 +128,13 @@
     align-items: center;
   }
 
-  /* Responsiveness */
+  /* Responsiivisuus 2 nappia per rivi pienemällä näytöllä */
   @media (max-width: 1300px) {
     .button {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-
+  /* Responsiivisuus 1 nappi per rivi pienemällä näytöllä */
   @media (max-width: 800px) {
     .button {
       grid-template-columns: 1fr;

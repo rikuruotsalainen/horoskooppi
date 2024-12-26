@@ -5,46 +5,57 @@
   export let isLoading = false;
 </script>
 
+<!-- Vain jos modaali on näkyvissä -->
 {#if showModal}
-  <div class="modal-overlay" on:click={closeModal}>
-    <div class="modal-content" on:click|stopPropagation>
+  <div class="overlay">
+    <div class="content">
+      <!-- Lataus teksti -->
       {#if isLoading}
         <p>Loading...</p>
       {:else}
+        <!-- Valitun horoskoopin nimi -->
         <h1>{modalContent.title}</h1>
+        <!-- Horoskoopin päivämäärä saatu fetchistä -->
         <h2>{modalContent.date}</h2>
+        <!-- Horoskoopin kuva -->
         <img src={modalContent.image} alt={modalContent.title} />
-        <p>{modalContent.description}</p>
+        <!-- Fecthistä saatu tieto -->
+        <div class="description">
+          <p>{modalContent.description}</p>
+        </div>
+        <!-- Nappi joka sulkee modaalin -->
         <button on:click={closeModal} class="button">Close</button>
       {/if}
     </div>
   </div>
 {/if}
 
+<!-- Tyylit -->
 <style>
-  .modal-overlay {
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1000;
   }
 
-  .modal-content {
+  .content {
     background: #3f3154;
     padding: 20px;
     width: 50%;
     text-align: center;
     border-color: #aca3af;
+    border-style: solid;
     border-radius: 20px;
-    border-width: 5px;
+    border-width: 3px;
   }
-  .modal-content img {
+  .content img {
     max-width: 100%;
     height: auto;
   }
@@ -57,10 +68,27 @@
     height: 50px;
     border-color: #aca3af;
     border-radius: 20px;
+    border-style: solid;
     border-width: 5px;
     cursor: pointer;
   }
   .button:hover {
     background-color: #4a3c64;
+  }
+  p {
+    font-size: large;
+  }
+  .description {
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    border-color: #aca3af;
+    border-radius: 20px;
+    border-width: 3px;
+    border-style: solid;
+    margin-left: 5%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    padding: 5%;
   }
 </style>

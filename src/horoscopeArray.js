@@ -1,4 +1,4 @@
-// kuvat
+// Kuvat
 import capricorn from './assets/capricorn.png';
 import aquarius from './assets/aquarius.png';
 import pisces from './assets/pisces.png';
@@ -11,7 +11,7 @@ import virgo from './assets/virgo.png';
 import libra from './assets/libra.png';
 import scorpio from './assets/scorpio.png';
 import sagittarius from './assets/sagittarius.png';
-
+// Taulukko horoskoopeille
 export const horoscopeArray = [
   { id: 'Capricorn', image: capricorn, date: 'December 22 - January 19' },
   { id: 'Aquarius', image: aquarius, date: 'January 20 - February 18' },
